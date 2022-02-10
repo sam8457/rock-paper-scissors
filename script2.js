@@ -5,7 +5,7 @@ function comnputerPlay(){
     return winOrder[move]
 }
 
-function playRound(playerSelection, computerSelection) {
+function roundEval(playerSelection, computerSelection) {
 
     playerSelection = playerSelection.toLowerCase() // clean up
 
@@ -14,33 +14,57 @@ function playRound(playerSelection, computerSelection) {
     
     // checks for tie
     if (playerIndex == computerIndex) {
-        return ["Tie, both " + playerSelection + ".", 0]
+        return ["Tie, both " + playerSelection + ".", "tie"]
     }
     // checks if player is one up or loops back around 
     else if (playerIndex == computerIndex + 1 || playerIndex == computerIndex - 2) { 
         return ["You win, " + playerSelection +
-        " beats " + computerSelection + ".", 1]
+        " beats " + computerSelection + ".", "player"]
     }
     // losing is the only remaining possibility
     else {
         return ["You lose, " + computerSelection +
-        " beats " + playerSelection + ".", 0]
+        " beats " + playerSelection + ".", "com"]
     }
 }
 
 function inputHandler() {
-    result = playRound(this.id, comnputerPlay())
+
+    result = roundEval(this.id, comnputerPlay())
     console.log(result[0])
     const resultDiv = document.querySelector('#results')
     resultDiv.textContent = result[0]
+
+    if (result[1] == "player") {
+        playerWins += 1
+    } else if (result[1] == "com") {
+        comWins += 1
+    } else {
+        ties += 1
+    }
+
+    const playerScore = document.querySelector("#playerScore")
+    const comScore = document.querySelector("#comScore")
+
+    playerScore.textContent = "You: " + playerWins
+    comScore.textContent = "Com: " + comWins
+
+    const winner = document.querySelector('#winner')
+    if (playerWins >= 5) {
+        winner.textContent = "Player has won." 
+    } else if (comWins >= 5) {
+        winner.textContent = "Computer has won."
+    }
 }
 
-function game() {
-    
+function main() {
+    playerWins = 0
+    comWins = 0
+    ties = 0
+
     const buttons = document.querySelectorAll('button')
 
     buttons.forEach(button => button.addEventListener('click', inputHandler))
-
 }
 
-game()
+main()
