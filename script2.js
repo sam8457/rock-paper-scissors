@@ -28,17 +28,19 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game(){
-    let wins = 0
-    console.log("Rock-Paper-Scissors Start!")
-    for (let i = 1; i <= 5; i++) {
-        console.log("Round " + i)
-        playerChoice = prompt("Your choice: ")
-        results = playRound(playerChoice, comnputerPlay())
-        console.log(results[0])
-        wins += results[1]
-    }
-    console.log("You won " + wins + " times.")
+function inputHandler() {
+    result = playRound(this.id, comnputerPlay())
+    console.log(result[0])
+    const resultDiv = document.querySelector('#results')
+    resultDiv.textContent = result[0]
+}
+
+function game() {
+    
+    const buttons = document.querySelectorAll('button')
+
+    buttons.forEach(button => button.addEventListener('click', inputHandler))
+
 }
 
 game()
